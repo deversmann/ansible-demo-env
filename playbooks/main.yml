@@ -1,0 +1,7 @@
+---
+- name: Configure Ansible Tower
+  hosts: all
+  become: yes
+  tasks: 
+    - name: Download the latest Tower
+      get_url:
