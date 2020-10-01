@@ -2,6 +2,39 @@
 - name: Configure Ansible Tower
   hosts: all
   become: yes
+  become_user: root
+  vars:
+    tower_version: 3.7.3-1
   tasks: 
+    - name: Ensure unzip is installed
+      dnf:
+        name: unzip
+        state: present 
+
+    - name: Ensure Ansible is installed
+      pip:
+        name: ansible
+        executable: pip3
+
     - name: Download the latest Tower
-      get_url:
+      unarchive:
+        src: https://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-{{ tower_version }}.tar.gz
+        dest: /home/vagrant/
+        remote_src: yes
+
+    - name: Update Inventory passwords
+      lineinfile:
+        path: /home/vagrant/ansible-tower-setup-{{ tower_version }}/inventory
+        regexp: "{{ item.original }}"
+        line: "{{ item.new }}"
+        state: present
+      loop:
+        - { original: "^admin_password", new: "admin_password='password'" }
+        - { original: "^pg_password", new: "pg_password='password'" }
+
+    - name: Run Ansible Tower 
+      shell: ./setup.sh
+      args:
+        chdir: /home/vagrant/ansible-tower-setup-{{ tower_version }}
+      async: 1400
+      poll: 15
