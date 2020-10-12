@@ -36,5 +36,6 @@
       shell: ./setup.sh
       args:
         chdir: /home/vagrant/ansible-tower-setup-{{ tower_version }}
+        creates: /etc/yum.repos.d/ansible-tower.repo
       async: 1400
       poll: 15
