@@ -79,11 +79,14 @@ Vagrant.configure(2) do |config|
       # on the tower box, run the tower install playbook
       if i==0
         subconfig.vm.provision "ansible" do |ansible|
-          ansible.playbook = "playbooks/main.yml"
+          ansible.playbook = "playbooks/tower.yml"
           ansible.become = true
         end
       else
-        # endpoint playbook execution here
+        subconfig.vm.provision "ansible" do |ansible|
+          ansible.playbook = "playbooks/node.yml"
+          ansible.become = true
+        end
       end
     end
   end

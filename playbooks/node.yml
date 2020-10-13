@@ -1,0 +1,10 @@
+---
+- name: Configure nodes
+  hosts: all
+  become: yes
+  become_user: root
+
+  tasks:
+    - name: ping
+      ping:
+      
