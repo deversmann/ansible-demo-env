@@ -41,6 +41,7 @@ After setting all of the variables in the `Vagrantfile`, simply type:
 vagrant up
 ```
 
+> :exclamation:
 > In order to process the trigger that creates a local ansible inventory file, we are using "experimental" features of Vagrant.  To turn those on, you need to include a specific environment variable with the start command.  Instead type:
 > ```shell
 > VAGRANT_EXPERIMENTAL=typed_triggers vagrant up
