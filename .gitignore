@@ -1,5 +1,3 @@
 .vagrant
-
-# created by provision script:
-id_rsa
-id_rsa.pub
+share/*
+!share/README.md

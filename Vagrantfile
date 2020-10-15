@@ -49,10 +49,31 @@ for x in {0..#{num_endpoints}}; do
     echo "#{ip_base}$((#{ip_start} + x)) $machine $machine.#{domain_base}" | sudo tee -a /etc/hosts &>/dev/null
   }
 done
-#end script
 SCRIPT
 ## end global script
 
+## inventory script - handles creating ansible inventory file on host
+# Due to a quirk with Vagrant, triggers run as local inline need to be formatted as 
+# a command and not a full blown shell script.  In order to conform, the shell script
+# has been modified to actually be a single line call to `bash -c` with the body of
+# the script between single quotes and every line ended with "; \".
+$inventory = <<SCRIPT
+bash -c '\
+echo "[control]" > share/inventory; \
+echo "#{tower_subdomain} ansible_host=#{ip_base}#{ip_start}" >> share/inventory; \
+echo "" >> share/inventory; \
+if [ #{num_endpoints} ]; then \
+  echo "[nodes]" >> share/inventory; \
+  for x in {1..#{num_endpoints}}; do \
+    echo "#{endpoint_subdomain_prefix}$x ansible_host=#{ip_base}$((#{ip_start} + x))" >> share/inventory; \
+  done; \
+fi; \
+echo "" >> share/inventory; \
+echo "[all:vars]" >> share/inventory; \
+echo "ansible_user=vagrant" >> share/inventory \
+'
+SCRIPT
+## end invetory script
 
 Vagrant.configure(2) do |config|
   # loop: 0=tower node; 1..=endpoint nodes
@@ -74,7 +95,7 @@ Vagrant.configure(2) do |config|
       end
       subconfig.vm.hostname = hostname
       subconfig.vm.network "#{network_type}", ip: ip, hostname: true
-      subconfig.vm.synced_folder ".", "/vagrant"
+      subconfig.vm.synced_folder "share", "/vagrant"
       subconfig.vm.provision "shell", privileged: false, inline: $global
       # on the tower box, run the tower install playbook
       if i==0
@@ -91,11 +112,21 @@ Vagrant.configure(2) do |config|
     end
   end
 
-  # trigger is only necessary if using vagrant-registration plugin:
+  # This trigger generates the files local to the host machine that can be used to access
+  # the guests.  In order for it to run, Vagrant must be at or above v.2.2.8 and the 
+  # `vagrant up` command must be run with the env var `VAGRANT_EXPERIMENTAL=typed_tshar riggers`
+  if Vagrant.version?(">= 2.2.8")
+    config.trigger.after :up, type: :command do |trigger|
+      trigger.name = "Generate environment configs"
+      trigger.run = {inline: $inventory}
+    end
+  end
+
+  # This trigger is only necessary if using vagrant-registration plugin:
   #     https://github.com/projectatomic/adb-vagrant-registration
-  # registration plugin is globally configured and runs before vm's hostname is set
-  # this trigger runs before each machine starts and sets the registration name
-  # to whatever sits in the vm hostname config
+  # Registration plugin is globally configured and runs before vm's hostname is set.
+  # This trigger runs before each machine starts and sets the registration name
+  # to whatever sits in the vm hostname config.
   config.trigger.before [:provision, :reload, :resume, :up] do |trigger|
     trigger.name = "Registration Name Override"
     if Vagrant.has_plugin?('vagrant-registration')
