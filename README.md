@@ -40,6 +40,12 @@ After setting all of the variables in the `Vagrantfile`, simply type:
 ```shell
 vagrant up
 ```
+
+> In order to process the trigger that creates a local ansible inventory file, we are using "experimental" features of Vagrant.  To turn those on, you need to include a specific environment variable with the start command.  Instead type:
+> ```shell
+> VAGRANT_EXPERIMENTAL=typed_triggers vagrant up
+> ```
+
 Vagrant will run for quite some time provisioning all of the machines.  When it completes, all of your machines should be available at the IP addresses you configured. They should also all be configured for passwordless SSH between each-other with the `vagrant` user, as well as paswordless `sudo`. Tower should be running on the tower box.  You can ssh into the machines either by using the Vagrant ssh command:
 ```shell
 vagrant ssh tower
@@ -61,6 +67,6 @@ vagrant destroy
 Both halt and destroy will unregister the machines if you are using the `vagrant-registration` plugin. Restarting them will re-register them.
 
 ## TO-DOs
-- Output a message after provisioning is complete with all the names and IPs used.
-- Generate a rudimentary Ansible `inventory` and `ansible.cfg` for the host to use to run ansible against all of the machines.
-- Output a `hosts` file exerpt containing all of the boxes info for use on the host machine.
+- [ ] Output a message after provisioning is complete with all the names and IPs used.
+- [x] Generate a rudimentary Ansible `inventory` and `ansible.cfg` for the host to use to run ansible against all of the machines.
+- [ ] Output a `hosts` file exerpt containing all of the boxes info for use on the host machine.
