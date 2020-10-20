@@ -1,0 +1,32 @@
+---
+- name: Configure host
+  hosts: localhost
+
+  tasks:
+    - name: Add mappings to /etc/hosts
+      blockinfile:
+        path: /etc/hosts
+        block: |
+          {% for item in groups["all"] %}
+          {{ hostvars[item].ansible_host }} {{ item }} {{ item.split(".")[0] }}
+          {% endfor %}
+        marker: "# {mark} ANSIBLE MANAGED BLOCK vagrant-tower-demo-env"
+      become: yes
+      tags: add_hosts
+
+    - name: Remove mappings from /etc/hosts
+      blockinfile:
+        path: /etc/hosts
+        state: absent
+        marker: "# {mark} ANSIBLE MANAGED BLOCK vagrant-tower-demo-env"
+      become: yes
+      tags: remove_hosts
+
+    - name: Output information
+      debug:
+        msg: |
+          The following systems were provisioned:
+          {% for item in groups["all"] %}
+          {{ item }} : {{ hostvars[item].ansible_host }}
+          {% endfor %}
+      tags: list_hosts
