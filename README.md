@@ -67,7 +67,16 @@ vagrant destroy
 
 Both halt and destroy will unregister the machines if you are using the `vagrant-registration` plugin. Restarting them will re-register them.
 
+## Host tools
+The `playbooks` directory includes a `host.yml` playbook that when run, can update the host's `/etc/hosts` file with information about the nodes.  It can also remove that information and also just display it.  When executed from the project directory, the included `ansible.cfg` file will automatically use the generated inventory and ssh key files.  The 3 different actions are tagged to aid in selectively running them.
+
+```shell
+ansible-playbook playbooks/host.yml --tags=list_hosts
+ansible-playbook playbooks/host.yml --tags=add_hosts -K
+ansible-playbook playbooks/host.yml --tags=remove_hosts -K
+```
+
 ## TO-DOs
-- [ ] Output a message after provisioning is complete with all the names and IPs used.
+- [x] Output a message after provisioning is complete with all the names and IPs used.
 - [x] Generate a rudimentary Ansible `inventory` and `ansible.cfg` for the host to use to run ansible against all of the machines.
-- [ ] Output a `hosts` file exerpt containing all of the boxes info for use on the host machine.
+- [x] Output a `hosts` file exerpt containing all of the boxes info for use on the host machine.
