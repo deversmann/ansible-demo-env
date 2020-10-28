@@ -107,6 +107,7 @@ Vagrant.configure(2) do |config|
 
     config.vm.define machine_name, primary: primary do |subconfig|
       subconfig.vm.box = "generic/rhel8"
+      subconfig.vm.box_version = ">= 3.0.32"
       subconfig.vm.provider "virtualbox" do |v|
         v.name = machine_name
         v.memory = memory
@@ -133,9 +134,9 @@ Vagrant.configure(2) do |config|
   end
 
   # This trigger generates the files local to the host machine that can be used to access
-  # the guests.  In order for it to run, Vagrant must be at or above v.2.2.8 and the 
+  # the guests.  In order for it to run, Vagrant must be at or above v.2.2.4 and the 
   # `vagrant up` command must be run with the env var `VAGRANT_EXPERIMENTAL=typed_triggers`
-  if Vagrant.version?(">= 2.2.8")
+  if Vagrant.version?(">= 2.2.4")
     config.trigger.after :up, type: :command do |trigger|
       trigger.name = "Generate environment configs"
       trigger.run = {inline: $inventory}
@@ -143,9 +144,9 @@ Vagrant.configure(2) do |config|
   end
 
   # This trigger outputs a list of the guests what were created along with their assigned
-  # IP addresses.  In order for it to run, Vagrant must be at or above v.2.2.8 and the 
+  # IP addresses.  In order for it to run, Vagrant must be at or above v.2.2.4 and the 
   # `vagrant up` command must be run with the env var `VAGRANT_EXPERIMENTAL=typed_triggers`
-  if Vagrant.version?(">= 2.2.8")
+  if Vagrant.version?(">= 2.2.4")
     config.trigger.after :up, type: :command do |trigger|
       trigger.name = "Generate environment configs"
       trigger.run = {inline: $message}
