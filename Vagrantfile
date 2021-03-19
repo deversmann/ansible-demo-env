@@ -5,7 +5,7 @@
 network_type = "private_network"  # either "private_network" (host-only) or "public_network" (bridged)
 ip_base = "192.168.68."           # if type is "public_network", be sure to use existing network
 ip_start = 200                    # if type is "public_network", be sure ips are in proper range (not dhcp range)
-num_endpoints = 0                 # number of bexes in addition to the tower box
+num_endpoints = 2                 # number of bexes in addition to the tower box
 domain_base = "local"             # domain names will be subdomain.domain_base where subdomain is from next 2
 tower_subdomain = "tower"
 endpoint_subdomain_prefix = "node"
