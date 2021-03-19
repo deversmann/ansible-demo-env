@@ -77,6 +77,4 @@ ansible-playbook playbooks/host.yml --tags=remove_hosts -K
 ```
 
 ## TO-DOs
-- [x] Output a message after provisioning is complete with all the names and IPs used.
-- [x] Generate a rudimentary Ansible `inventory` and `ansible.cfg` for the host to use to run ansible against all of the machines.
-- [x] Output a `hosts` file exerpt containing all of the boxes info for use on the host machine.
+**moved TO-DOs to GitHub issues**

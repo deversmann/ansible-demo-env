@@ -5,7 +5,7 @@
 network_type = "private_network"  # either "private_network" (host-only) or "public_network" (bridged)
 ip_base = "192.168.68."           # if type is "public_network", be sure to use existing network
 ip_start = 200                    # if type is "public_network", be sure ips are in proper range (not dhcp range)
-num_endpoints = 2                 # number of bexes in addition to the tower box
+num_endpoints = 0                 # number of bexes in addition to the tower box
 domain_base = "local"             # domain names will be subdomain.domain_base where subdomain is from next 2
 tower_subdomain = "tower"
 endpoint_subdomain_prefix = "node"
@@ -62,7 +62,7 @@ bash -c '\
 echo "[control]" > share/inventory; \
 echo "#{tower_subdomain}.#{domain_base} ansible_host=#{ip_base}#{ip_start}" >> share/inventory; \
 echo "" >> share/inventory; \
-if [ #{num_endpoints} ]; then \
+if [ #{num_endpoints} -gt 0 ]; then \
   echo "[nodes]" >> share/inventory; \
   for x in {1..#{num_endpoints}}; do \
     echo "#{endpoint_subdomain_prefix}$x.#{domain_base} ansible_host=#{ip_base}$((#{ip_start} + x))" >> share/inventory; \
@@ -85,7 +85,7 @@ bash -c '\
 echo "**************************************************"; \
 echo "The following systems were provisioned/started:"; \
 echo "#{tower_subdomain}.#{domain_base} : #{ip_base}#{ip_start}"; \
-if [ #{num_endpoints} ]; then \
+if [ #{num_endpoints} -gt 0 ]; then \
   for x in {1..#{num_endpoints}}; do \
     echo "#{endpoint_subdomain_prefix}$x.#{domain_base} : #{ip_base}$((#{ip_start} + x))"; \
   done; \
@@ -106,8 +106,8 @@ Vagrant.configure(2) do |config|
     primary = i==0
 
     config.vm.define machine_name, primary: primary do |subconfig|
-      subconfig.vm.box = "generic/rhel8"
-      subconfig.vm.box_version = ">= 3.0.32"
+      subconfig.vm.box = "damienlive/rhelbox"
+      subconfig.vm.box_version = "8.3.0"
       subconfig.vm.provider "virtualbox" do |v|
         v.name = machine_name
         v.memory = memory

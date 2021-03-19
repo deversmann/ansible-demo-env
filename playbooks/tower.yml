@@ -4,17 +4,15 @@
   become: yes
   become_user: root
   vars:
-    tower_version: 3.7.3-1
+    tower_version: 3.8.2-1
   tasks: 
-    - name: Ensure unzip is installed
+    - name: Ensure unzip and Ansible are installed
       dnf:
-        name: unzip
+        name: 
+          - unzip
+          - ansible
+        enablerepo: ansible-2.9-for-rhel-8-x86_64-rpms
         state: present 
-
-    - name: Ensure Ansible is installed
-      pip:
-        name: ansible
-        executable: pip3
 
     - name: Download the latest Tower
       unarchive:
@@ -32,7 +30,7 @@
         - { original: "^admin_password", new: "admin_password='password'" }
         - { original: "^pg_password", new: "pg_password='password'" }
 
-    - name: Run Ansible Tower 
+    - name: Run Ansible Tower Setup
       shell: ./setup.sh
       args:
         chdir: /home/vagrant/ansible-tower-setup-{{ tower_version }}
