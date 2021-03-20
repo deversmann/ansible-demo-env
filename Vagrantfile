@@ -107,7 +107,7 @@ Vagrant.configure(2) do |config|
 
     config.vm.define machine_name, primary: primary do |subconfig|
       subconfig.vm.box = "damienlive/rhelbox"
-      subconfig.vm.box_version = "8.3.0"
+      subconfig.vm.box_version = "~> 8.3.1616209182"
       subconfig.vm.provider "virtualbox" do |v|
         v.name = machine_name
         v.memory = memory
