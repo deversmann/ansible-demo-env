@@ -1,4 +1,4 @@
-# CONFIG FILE
+---
 network_type: "private_network"  # either "private_network" (host-only) or "public_network" (bridged)
 ip_base: "192.168.68."           # if type is "public_network", be sure to use existing network
 ip_start: 200                    # if type is "public_network", be sure ips are in proper range (not dhcp range)
