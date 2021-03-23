@@ -1,3 +1,4 @@
 .vagrant
 share/*
 !share/README.md
+config_local.yml
