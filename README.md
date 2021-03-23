@@ -10,28 +10,25 @@ user.
 |--|--|
 | [Vagrant](https://www.vagrantup.com) | `brew cask install vagrant` |
 | [VirtualBox](https://www.virtualbox.org) | `brew cask install virtualbox` |
-| Virtual Box Extension Pack (optional) | `brew cask install virtualbox-extension-pack`
 | [Ansible](https://www.ansible.com) | `pip3 install ansible` |
 | [vagrant-registration plugin](https://github.com/projectatomic/adb-vagrant-registration) (optional) <br /> Automatically registers RHEL boxes with  RHSM | `vagrant plugin install vagrant-registration` |
 
 ## Configuration
-The top of the `Vagrantfile` includes the following user-configurable variables:
-| Variable name | Acceptable values | Description |
-|--|--|--|
-| `network_type` | `"private_network"`, `"public_network"` | `"private_network"` means host-only, `"public_network"` means bridged |
-| `ip_base` | `"xxx.yyy.zzz."` | i.e. `"192.168.68."`. If type is `"public_network"`, be sure to use existing network. |
-| `ip_start` | integer < 253 | i.e. `200`. If type is `"public_network"`, be sure IPs are in proper range (not dhcp range). |
-| `num_endpoints` | integer | i.e. `2`. The number of boxes in addition to the tower box. |
-| `domain_base` | legal domain name string | i.e. `"local"`. Domain names will be `subdomain`.`domain_base` where `subdomain` is from the next 2 variables. |
-| `tower_subdomain` | legal domain name string | i.e. `"tower"` |
-| `endpoint_subdomain_prefix` | legal domain name string | i.e. `"node"` |
-| `tower_memory` | integer | i.e. `6144`. Number of MB of memory to allocate to the Tower box. Tower is a glutton and seems to function best with at least 6GB. |
-| `tower_cpus` | integer | i.e. `4` Number of virtual cpus to allocate to the Tower box. Tower is a glutton and seems to function best with at least 4 cpus. |
-| `endpoint_memory` | integer | i.e. `1024`. Number of MB of memory to allocate to the endpoint boxes. |
-| `endpoint_cpus` | integer | i.e. `1`. Number of virtual cpus to allocate to the endpoint boxes. |
-| `vm_group` | string | i.e. `"AnsibleTowerDemo"`. Name of the VirtualBox group to place the VMs in.  Eases management and startup/shutdown of all machines from VirtualBox console. |
-
-Sensible defaults are included in the file.
+The project uses the defaults shown in the table below.  If desired, any configuration option can be overridden by copying the file `config_local.yml.template` to `config_local.yml` and uncommenting and changing the desired option adhering to the *Acceptable values* in the table below. Any defaults not overridden will continue to use the defaults.
+| Variable name | Acceptable values | Default | Description |
+|--|--|--|--|
+| `network_type` | `"private_network"`, `"public_network"` | `"private_network"` | `"private_network"` means host-only, `"public_network"` means bridged |
+| `ip_base` | `"xxx.yyy.zzz."` | `"192.168.68."` | i.e. `"192.168.68."`. If type is `"public_network"`, be sure to use existing network. |
+| `ip_start` | integer < 253 | `200` | i.e. `200`. If type is `"public_network"`, be sure IPs are in proper range (not dhcp range). |
+| `num_endpoints` | integer | `2` | i.e. `2`. The number of boxes in addition to the tower box. |
+| `domain_base` | legal domain name string | `"local"` | i.e. `"local"`. Domain names will be `subdomain`.`domain_base` where `subdomain` is from the next 2 variables. |
+| `tower_subdomain` | legal domain name string | `"tower"` | i.e. `"tower"` |
+| `endpoint_subdomain_prefix` | legal domain name string | `"node"` | i.e. `"node"` |
+| `tower_memory` | integer | `6144` | i.e. `6144`. Number of MB of memory to allocate to the Tower box. Tower is a glutton and seems to function best with at least 6GB. |
+| `tower_cpus` | integer | `4` | i.e. `4` Number of virtual cpus to allocate to the Tower box. Tower is a glutton and seems to function best with at least 4 cpus. |
+| `endpoint_memory` | integer | `1024` | i.e. `1024`. Number of MB of memory to allocate to the endpoint boxes. |
+| `endpoint_cpus` | integer | `1` | i.e. `1`. Number of virtual cpus to allocate to the endpoint boxes. |
+| `vm_group` | string | `"AnsibleTowerDemo"` | i.e. `"AnsibleTowerDemo"`. Name of the VirtualBox group to place the VMs in.  Eases management and startup/shutdown of all machines from VirtualBox console. |
 
 If using the `vagrant-registration` plugin, it is recommended to store the registration information in `~/.vagrant.d/Vagrantfile` as described in the [plugin docs](https://github.com/projectatomic/adb-vagrant-registration#credential-configuration).  The `Vagrantfile` included in this project only supplies the `config.registration.name` value if the plugin is detected.
 
