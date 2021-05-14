@@ -8,6 +8,7 @@
 #endpoint_subdomain_prefix: "node"
 #tower_memory: 6144               # tower is a glutton and seems to function best with at least 6GB
 #tower_cpus: 4                    # tower is a glutton and seems to function best with at least 4 cpus
+#tower_install: yes               # whether to install tower
 #endpoint_memory: 1024
 #endpoint_cpus: 1
 #vm_group: "AnsibleTowerDemo"     # puts all vms in a single group in virtualbox for ease of management

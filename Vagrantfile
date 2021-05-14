@@ -13,6 +13,7 @@ tower_subdomain: "tower"
 endpoint_subdomain_prefix: "node"
 tower_memory: 6144
 tower_cpus: 4
+tower_install: yes
 endpoint_memory: 1024
 endpoint_cpus: 1
 vm_group: "AnsibleTowerDemo"
@@ -131,6 +132,9 @@ Vagrant.configure(2) do |config|
         subconfig.vm.provision "ansible" do |ansible|
           ansible.playbook = "playbooks/tower.yml"
           ansible.become = true
+          ansible.extra_vars = {
+            tower_install: "#{_config["tower_install"]}"
+          }
         end
       else
         subconfig.vm.provision "ansible" do |ansible|
