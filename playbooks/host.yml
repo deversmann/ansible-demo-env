@@ -12,7 +12,9 @@
           {% endfor %}
         marker: "# {mark} ANSIBLE MANAGED BLOCK vagrant-tower-demo-env"
       become: yes
-      tags: add_hosts
+      tags: 
+        - add_hosts
+        - never
 
     - name: Remove mappings from /etc/hosts
       blockinfile:
@@ -20,7 +22,9 @@
         state: absent
         marker: "# {mark} ANSIBLE MANAGED BLOCK vagrant-tower-demo-env"
       become: yes
-      tags: remove_hosts
+      tags: 
+        - remove_hosts
+        - never
 
     - name: Output information
       debug:
