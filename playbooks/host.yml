@@ -10,7 +10,7 @@
           {% for item in groups["all"] %}
           {{ hostvars[item].ansible_host }} {{ item }} {{ item.split(".")[0] }}
           {% endfor %}
-        marker: "# {mark} ANSIBLE MANAGED BLOCK vagrant-tower-demo-env"
+        marker: "# {mark} ANSIBLE MANAGED BLOCK ansible-demo-env"
       become: yes
       tags: 
         - add_hosts
@@ -20,7 +20,7 @@
       blockinfile:
         path: /etc/hosts
         state: absent
-        marker: "# {mark} ANSIBLE MANAGED BLOCK vagrant-tower-demo-env"
+        marker: "# {mark} ANSIBLE MANAGED BLOCK ansible-demo-env"
       become: yes
       tags: 
         - remove_hosts
